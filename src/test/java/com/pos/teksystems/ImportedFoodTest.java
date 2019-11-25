@@ -6,6 +6,8 @@ import com.pos.teksystems.model.category.MedicalSupplies;
 import com.pos.teksystems.model.category.base.Category;
 import com.pos.teksystems.model.goods.Good;
 import com.pos.teksystems.model.goods.ImportedGood;
+import com.pos.teksystems.utils.PurchaseUtils;
+import com.pos.teksystems.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +24,7 @@ public class ImportedFoodTest {
   public static final BigDecimal EXPECTED_CHOCOLATE_PRICE = new BigDecimal("10.00");
   public static final String BOX_OF_CHOCOLATE = "Box of chocolate";
   private Good good;
-
+  final Utils purchaseUtils = new PurchaseUtils();
   @Before
   public void setup() {
 
@@ -31,6 +33,7 @@ public class ImportedFoodTest {
             .price(EXPECTED_CHOCOLATE_PRICE)
             .name(BOX_OF_CHOCOLATE)
             .category(new ImportedFoods())
+            .purchaseUtils(purchaseUtils)
             .build();
   }
 

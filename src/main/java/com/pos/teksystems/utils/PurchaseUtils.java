@@ -4,17 +4,19 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class PurchaseUtils {
+public class PurchaseUtils implements Utils {
 
     private static String pattern = "#0.00";
+    private DecimalFormat df = new DecimalFormat(pattern);
 
-    public static DecimalFormat getPriceFormatter() {
-        DecimalFormat df = new DecimalFormat(pattern);
-        return df;
+
+    @Override
+    public String format(BigDecimal value){
+        return df.format(value);
     }
 
-
-    public static BigDecimal round(BigDecimal value) {
+    @Override
+    public  BigDecimal round(BigDecimal value) {
         BigDecimal increment = new BigDecimal("0.05");
         if (increment.signum() == 0) {
             // 0 increment does not make much sense, but prevent division by 0

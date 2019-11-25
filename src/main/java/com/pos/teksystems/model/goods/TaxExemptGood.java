@@ -2,6 +2,7 @@ package com.pos.teksystems.model.goods;
 
 import com.pos.teksystems.exception.GoodCreationException;
 import com.pos.teksystems.model.category.base.Category;
+import com.pos.teksystems.utils.Utils;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -15,8 +16,8 @@ public class TaxExemptGood extends BaseGood implements Good {
     private final String ERROR_MESSAGE="Creating a tax exempt good with wrong category ";
 
     @Builder(builderMethodName = "builder")
-    public TaxExemptGood(BigDecimal price, Category category, String name) {
-        super(price,category,name);
+    public TaxExemptGood(BigDecimal price, Category category, String name, Utils purchaseUtils) {
+        super(price,category,name, purchaseUtils);
         if (!notTaxableCategories.contains(category.getName()))
             throw new GoodCreationException(ERROR_MESSAGE.concat(category.toString()));
 

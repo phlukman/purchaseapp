@@ -6,6 +6,8 @@ import com.pos.teksystems.model.category.MedicalSupplies;
 import com.pos.teksystems.model.goods.Good;
 import com.pos.teksystems.model.goods.ImportedGood;
 import com.pos.teksystems.model.goods.OnlySalesTaxableGood;
+import com.pos.teksystems.utils.PurchaseUtils;
+import com.pos.teksystems.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,7 @@ public class OnlySalesTaxableGoodTest {
   public static final BigDecimal EXPECTED_PARFUME_PRICE = new BigDecimal("18.99");
   public static final String EXPECTED_PERFUM_NAME = "Channel 5";
   private Good good;
+  private Utils purchaseUtils = new PurchaseUtils();
 
   @Before
   public void setup() {
@@ -31,6 +34,7 @@ public class OnlySalesTaxableGoodTest {
             .price(EXPECTED_PARFUME_PRICE)
             .name(EXPECTED_PERFUM_NAME)
             .category(new Fragance())
+            .purchaseUtils(purchaseUtils)
             .build();
   }
 

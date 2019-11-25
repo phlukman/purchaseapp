@@ -3,6 +3,7 @@ package com.pos.teksystems.model.goods;
 import com.pos.teksystems.exception.GoodCreationException;
 import com.pos.teksystems.model.category.base.Category;
 import com.pos.teksystems.utils.PurchaseUtils;
+import com.pos.teksystems.utils.Utils;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -19,8 +20,8 @@ public class OnlySalesTaxableGood extends BaseGood implements Good {
   private final String ERROR_MESSAGE="Creating an only sales taxable good with wrong category ";
 
   @Builder(builderMethodName = "builder")
-  public OnlySalesTaxableGood(BigDecimal price, Category category, String name) {
-    super(price, category, name);
+  public OnlySalesTaxableGood(BigDecimal price, Category category, String name, Utils purchaseUtils) {
+    super(price, category, name,purchaseUtils);
     if (!Category.onlySalesTaxableCategories.contains(category.getName()))
       throw new GoodCreationException(ERROR_MESSAGE.concat(category.toString()));
   }
@@ -35,7 +36,7 @@ public class OnlySalesTaxableGood extends BaseGood implements Good {
   @Override
   public BigDecimal getApplicableTax() {
 
-    return PurchaseUtils.round(getPrice().multiply(Category.SALES_TAX));
+    return getPurchaseUtils().round(getPrice().multiply(Category.SALES_TAX));
   }
 
 

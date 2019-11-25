@@ -2,6 +2,7 @@ package com.pos.teksystems.model.goods;
 
 import com.pos.teksystems.model.category.base.Category;
 import com.pos.teksystems.utils.PurchaseUtils;
+import com.pos.teksystems.utils.Utils;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -11,12 +12,15 @@ public abstract class BaseGood implements Good {
   @Getter protected BigDecimal price;
   @Getter protected Category category;
   @Getter protected String name;
+  @Getter private Utils purchaseUtils;
 
-  public BaseGood(BigDecimal price, Category category, String name) {
+
+  public BaseGood(BigDecimal price, Category category, String name, Utils purchaseUtils) {
 
     this.price = price;
     this.category = category;
     this.name = name;
+    this.purchaseUtils = purchaseUtils;
   }
 
   @Override
@@ -51,7 +55,7 @@ public abstract class BaseGood implements Good {
 
   @Override
   public String toString() {
-    return String.format("%s     %10s",name, PurchaseUtils.getPriceFormatter().format(getPricePlusTax()));
+    return String.format("%s     %10s",name, purchaseUtils.format(getPricePlusTax()));
   }
 
 

@@ -3,7 +3,9 @@ package com.pos.teksystems.model;
 import com.pos.teksystems.model.category.base.Category;
 import com.pos.teksystems.model.goods.Good;
 import com.pos.teksystems.utils.PurchaseUtils;
+import com.pos.teksystems.utils.Utils;
 import lombok.Getter;
+
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -14,6 +16,7 @@ public class Purchase {
 
   @Getter
   private final String title;
+  private final Utils purchaseUtils;
   private List<Good> goods = new ArrayList<>();
   private Set<Category> categories = new HashSet<Category>();
   private BigDecimal purchaseTax = new BigDecimal("0.00");
@@ -21,8 +24,9 @@ public class Purchase {
 
 
 
-  public Purchase(String s) {
+  public Purchase(String s, Utils purchaseUtils) {
     title = s;
+    this.purchaseUtils = purchaseUtils;
 
   }
 
@@ -67,11 +71,10 @@ public class Purchase {
 
 
   public void printReceipt() {
-    DecimalFormat priceFormatter = PurchaseUtils.getPriceFormatter();
     System.out.println(getTitle());
     System.out.println("---------------------------------------------");
     categories.forEach((c) -> getGoods(c.getName()).forEach(System.out::println));
-    System.out.format("Sales taxes: %5s   Total: %5s \n", priceFormatter.format(getPurchaseTax()), priceFormatter.format(getTotalPrice()));
+    System.out.format("Sales taxes: %5s   Total: %5s \n", purchaseUtils.format(getPurchaseTax()), purchaseUtils.format(getTotalPrice()));
     System.out.println("---------------------------------------------");
   }
 
@@ -82,7 +85,7 @@ public class Purchase {
    */
   public BigDecimal getPurchaseTax() {
 
-    return PurchaseUtils.round(purchaseTax);
+    return purchaseUtils.round(purchaseTax);
   }
 
   /**
@@ -91,6 +94,6 @@ public class Purchase {
    * @return total sales plus the corresponding taxes if applicable
    */
   public BigDecimal getTotalPrice() {
-    return new BigDecimal(PurchaseUtils.getPriceFormatter().format(purchaseSale));
+    return new BigDecimal(purchaseUtils.format(purchaseSale));
   }
 }

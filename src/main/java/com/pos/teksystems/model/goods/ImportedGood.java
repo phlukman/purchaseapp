@@ -3,6 +3,7 @@ package com.pos.teksystems.model.goods;
 import com.pos.teksystems.exception.GoodCreationException;
 import com.pos.teksystems.model.category.base.Category;
 import com.pos.teksystems.utils.PurchaseUtils;
+import com.pos.teksystems.utils.Utils;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -18,8 +19,8 @@ public class ImportedGood extends BaseGood implements Good {
   private final String ERROR_MESSGE = "Creating a imported good with wrong category ";
 
   @Builder(builderMethodName = "builder")
-  public ImportedGood(BigDecimal price, Category category, String name) {
-    super(price, category, name);
+  public ImportedGood(BigDecimal price, Category category, String name, Utils purchaseUtils) {
+    super(price, category, name,purchaseUtils);
     if (!Category.importedTaxableCategories.contains(category.getName()))
       throw new GoodCreationException(ERROR_MESSGE.concat(category.toString()));
   }
@@ -34,10 +35,10 @@ public class ImportedGood extends BaseGood implements Good {
   public BigDecimal getApplicableTax() {
 
     BigDecimal salesTax = new BigDecimal("0.00");
-    BigDecimal importTax = PurchaseUtils.round(getPrice().multiply(Category.IMPORT_TAX));
+    BigDecimal importTax = getPurchaseUtils().round(getPrice().multiply(Category.IMPORT_TAX));
     if (isSalesTaxable())
-        salesTax = PurchaseUtils.round(getPrice().multiply(Category.SALES_TAX));
-    return PurchaseUtils.round(new BigDecimal(PurchaseUtils.getPriceFormatter().format(importTax.add(salesTax))));
+        salesTax = getPurchaseUtils().round(getPrice().multiply(Category.SALES_TAX));
+    return getPurchaseUtils().round(new BigDecimal(getPurchaseUtils().format(importTax.add(salesTax))));
   }
 
 
